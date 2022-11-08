@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body> 
+    <div id="links">
+      <div><a href="index.html">Home</a></div>
+      <div><a href="dashboard.html">Dashboard</a></div>
+      <div> <p id="p1"> </p></div>
+      <div> <p id="p2"> </p></div>
+    </div>
+    <form action="" id="form">
+      <h2>Enter Your Application Details</h2>
+      <input placeholder="Enter Name" id="name" name="name" type="text" />
+      <input placeholder="Course" type="text" name="course" id="course" />
+      <input placeholder="Unit" type="text" name="unit" id="unit" />
+      <input placeholder=" Enter Image  link" type="url" name="image" id="url" />
+      <select name="batch" id="batch">
+        <option value="Batch1" id="batch1" onclick="batchfirst()">Batch01</option>
+        <option value="Batch2" id="batch2" onchange="batchsecond()">Batch02</option>
+      </select>      
+      <input id="submit" type="submit" name="submit" value="Submit" />
+    </form>
+  </body>
+  
+</html>
+<script>
+    
+  document.querySelector("#form").addEventListener("submit", myfunction)
+  var arr= JSON.parse(localStorage.getItem("studentdetails"))|| [];
+
+  var count=0;
+  var batch1= JSON.parse(localStorage.getItem("batch1count"))|| [];
+  var count2=0
+  var batch2= [];
+  function myfunction(){
+      event.preventDefault()
+
+      var bat1= document.querySelector("#batch").value
+
+      if(bat1=='Batch1')
+      {
+
+          count++;
+          document.getElementById("p1").innerText="Batch01 -  " + count
+          batch1.push(count) 
+           localStorage.setItem("batch1count",JSON.stringify(batch1))
+      }
+      
+
+      else  
+      {
+
+          count2++;
+          document.getElementById("p2").innerText="Batch02 -  " + count2
+          batch2[batch2.length]=count2 
+          localStorage.setItem("batch2count",JSON.stringify(batch2))
+      
+      }
+    
+      var obj= {
+        p_name:form.name.value,
+        p_course:form.course.value,
+        p_unit:form.unit.value,
+        p_url:form.url.value,
+        p_batch:form.batch.value,
+      }
+      arr.push(obj)
+      console.log(arr)
+      localStorage.setItem("studentdetails",JSON.stringify(arr)) 
+  }
+</script>
+

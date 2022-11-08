@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dashboard</title>
+    <link rel="stylesheet" href="commonStyles.css" />
+</head>
+<body>
+    <div id="links">
+        <div><a href="index.html">Home</a></div>
+        <div><a href="dashboard.html">Dashboard</a></div>
+        <div><p id="p1">Batch01</p></div>
+        <div><p id="p2">Batch02</p></div>
+
+      </div>
+    <main>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Course</th>
+              <th>Unit</th>
+              <th>Image link</th>
+              <th>Batch</th>
+              <th>Delete</th>
+              </tr>
+          </thead>
+          <tbody id="body">
+        
+          </tbody>
+        </table>
+      </main>
+    
+</body>
+</html>
+<script>
+    //you need to code here
+    var apparr = JSON.parse(localStorage.getItem("studentdetails"));
+
+    var batchc1= JSON.parse(localStorage.getItem("batch1count")) ||[];
+
+       var para1=  document.getElementById("p1")
+       para1.innerText= "Batch01 - "+ batchc1.length;
+
+       var batchc2= JSON.parse(localStorage.getItem("batch2count"))||[];
+
+       var para2=  document.getElementById("p2")
+       para2.innerText= "Batch02 - "+ batchc2.length;
+
+    
+    
+    displayData(apparr);
+
+    function displayData(data) {
+      data.forEach(function (elem, index) {
+        var tr = document.createElement("tr");
+
+        var td1 = document.createElement("td");
+        td1.innerText = elem.p_name
+
+        var td2 = document.createElement("td");
+        td2.innerText = elem.p_course;
+
+        var td3 = document.createElement("td");
+        td3.innerText = elem.p_unit;
+        
+        var td4 = document.createElement("img");
+        td4.src = elem.p_url;
+        var bat = document.createElement("td");
+        bat.innerText = elem.p_batch;
+
+        var td5 = document.createElement("td");
+        td5.innerText = "Delete";
+        td5.setAttribute("class", "deleteText");
+        td5.addEventListener("click", function () {
+          deleteItem(elem, index);
+        });
+
+        tr.append(td1, td2, td3, td4, bat, td5);
+
+        document.querySelector("tbody").append(tr);
+      });
+    }
+
+    function deleteItem(elem, index) {
+      apparr.splice(index, 1);
+
+      var trash= JSON.parse(localStorage.getItem("trash"))||[];
+       
+      
+      trash.push(elem); 
+      localStorage.setItem("trash",JSON.stringify(trash));
+
+      localStorage.setItem("studentdetails", JSON.stringify(apparr));
+      if (elem.p_batch=="Batch1")
+      {
+        batchc1.pop() 
+        para1.innerText= "Batch01 - "+ batchc1.length;
+        localStorage.setItem("batch1count",JSON.stringify(batchc1))
+          
+      }
+      else if (elem.p_batch=="Batch2")
+      {
+          batchc2.pop()
+        para2.innerText= "Batch02 - "+ batchc2.length;  
+        localStorage.setItem("batch2count",JSON.stringify(batchc2))
+      }
+        window.location.reload();
+    }
+  </script>
